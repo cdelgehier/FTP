@@ -1,0 +1,51 @@
+Port 22
+Port 2200
+
+Protocol 2
+
+SyslogFacility AUTHPRIV
+LogLevel VERBOSE
+
+PermitRootLogin no
+MaxAuthTries 5
+
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials yes
+
+UsePAM yes
+
+# Accept locale-related environment variables
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+
+X11Forwarding yes
+
+
+# override default of no subsystems
+Subsystem       sftp    internal-sftp
+
+
+#The default algorithms (that is, the algorithms which the client and server prefer
+#to use when given the choice) depend on the client and server implementations, how they were compiled and configured
+MACs hmac-sha1,hmac-ripemd160
+Ciphers aes128-cbc,3des-cbc,cast128-cbc
+
+################################################################
+Match group sftpusers
+        X11Forwarding no
+        AllowTcpForwarding no
+        ForceCommand internal-sftp -f AUTHPRIV -l DEBUG
+        ChrootDirectory /FILER/sftp/%u
+
+# Par mot de passe
+Match User cedric
+        PasswordAuthentication yes
+
+# Par clef
+#Match User cedric
+
