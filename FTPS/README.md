@@ -41,6 +41,7 @@ local_root=/FILER/ftps/cedric
 cmds_allowed=ABOR,ALLO,CDUP,CWD,DELE,EPRT,EPSV,FEAT,HELP,LIST,MODE,NLST,NOOP,OPTS,PASS,PASV,PORT,PWD,QUIT,REIN,REST,RETR,SIZE,STAT,STOR,STOU,STRU,SYST,TYPE,USER,AUTH,ADAT,PBSZ,PROT,CCC,MIC,CONF,ENC,RNFR,RNTO,MKD
 ```
 > **ftpusers et user_list**
+>
 > Ces 2 fichiers interdisent des users mais a différent niveaux
 > - ftpusers: A la connexion d'un utilisateur, PAM vient lire ce fichier et si l'identifiant de connexion utilisé est dans ce fichier, la connexion est refusée. Notons que la demande de mot de passe se fait quand meme. Donc le mot de passe (de root ?) transite en clair sur le reseau.
 > - user_list: Il est utilisé directement par vsftpd. Il peut avoir deux usages : soit les seuls utilisateurs contenus dans ce fichier ont le droit de se connecter, soit l'accès leur est systématiquement refusé. Avec lui, vsftpd coupera directement la connexion, sans même demander le mot de passe.
@@ -166,6 +167,7 @@ dirmessage_enable=YES
 ```
 
 > **Passif Vs Actif:
+> 
 > FTP peut fonctionner dans un *actif* ou un mode *passif*, qui détermine comment une connexion de données est établie. Dans les deux cas, un client crée une connexion de contrôle TCP à un port de commande du serveur FTP 21. Donc, en général il n'y a pas de problèmes lors de l'ouverture de la connexion de contrôle. Alors que les autres protocoles utilisent la même connexion à la fois pour le contrôle de session et le transfert de fichiers (données), le protocole FTP utilise une connexion séparée pour ces transferts.
 > - Actif: Dans ce mode, le client commence à écouter sur un port aléatoire pour les connexions de données entrantes provenant du serveur. Il informe le serveur de ce port grace à la commande *PORT*. Ce mode est peu utilisé car le client est souvent derriere un par feu ou un firewall et ces derniers refusent les connexions de ce genre.
 > - Passif : Ici c'est l'admin sys qui s'occupe de tout coté serveur, plutot qu'individuellement coté client. Le client utilise la directive de contrôle *PASV* et en retour il recoit une ip et un port coté serveur sur lesquels le transfert se fera.
